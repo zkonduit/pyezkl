@@ -5,7 +5,7 @@ A library for using and testing ezkl from Python. The main purpose of this repos
 ```
 pyezkl/
 ├── src/
-|    └── ezkle/ (pending: python bindings for calling ezkl)
+|   └── ezkl/ (pending: python bindings for calling ezkl)
 └── examples/
     └── tutorial/ (a tutorial for generating ezkl .onnx and .json inputs)
     └── onnx/ (sample onnx files)
