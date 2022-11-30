@@ -8,14 +8,8 @@ pyezkl/
 |   └── ezkl/ (pending: python bindings for calling ezkl)
 └── examples/
     └── tutorial/ (a tutorial for generating ezkl .onnx and .json inputs)
-    └── onnx/ (sample onnx files)
 ```
 
-
-If you want to add a model to `examples/onnx`, open a PR creating a new folder within `examples` with a descriptive model name. This folder should contain: 
-- a `.json` input file, with the fields expected by the  [ezkl](https://github.com/zkonduit/ezkl) cli. 
-- a `.onnx` file representing the trained model 
-- a `.py` file for generating the `.json` and `.onnx` files following the general structure of `examples/tutorial/tutorial.py`.
+For samples of onnx files generated using python see [this](https://github.com/zkonduit/onnx-examples) repo. 
 
 
-TODO: add associated python files in the onnx model directories. 
