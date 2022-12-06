@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ezkl"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Jason Morton", email="jason@zkonduit.com" },
   { name="Dante Camuto", email="jason@zkonduit.com" },    
