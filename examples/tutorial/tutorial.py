@@ -24,6 +24,7 @@ class Circuit(nn.Module):
     def _initialize_weights(self):
         init.orthogonal_(self.conv.weight)
 
+
 def main():
     torch_model = Circuit()
     # Input to the model

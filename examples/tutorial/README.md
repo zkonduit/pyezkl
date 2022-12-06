@@ -1,14 +1,3 @@
-To get started install [miniconda](https://docs.conda.io/en/latest/miniconda.html) for your system. From there create an new evironment:
-
-```bash
-conda create -n ezkl python=3.9
-```
-
-Activate your newly created environment and install the requisite dependencies:
-
-```bash
-conda activate ezkl; pip install torch numpy;       
-```
 
 The `tutorial.py` file creates a (relatively) complex Onnx graph that takes in 3 inputs `x`, `y`, and `z` and produces two outputs that we can verify against public inputs.
 
