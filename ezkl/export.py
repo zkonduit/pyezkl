@@ -27,7 +27,7 @@ def export(torch_model, input_shape=None, input_array=None, onnx_filename="netwo
 
         
     torch_out = torch_model(x)
-    print(torch_out)
+
     # Export the model
     torch.onnx.export(torch_model,               # model being run
                       x,                   # model input (or a tuple for multiple inputs)
