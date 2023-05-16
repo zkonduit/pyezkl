@@ -14,26 +14,6 @@ For samples of onnx files generated using python see [this](https://github.com/z
 
 ## development setup
 
-### conda
-
-To get started install [miniconda](https://docs.conda.io/en/latest/miniconda.html) for your system. From there create an new evironment:
-
-```bash
-conda create -n ezkl python=3.9
-```
-
-Activate your newly created environment and install the requisite dependencies:
-
-```bash
-conda activate ezkl; pip install torch numpy ezkl;
-```
-
-You can install pyezkl from this repository for development using
-
-```bash
-pip install .
-```
-
 ### poetry
 
 Install poetry. [For more instructions check view the poetry documentation](https://python-poetry.org/docs/)
@@ -64,4 +44,10 @@ poetry install
 python
 >>> import ezkl
 >>> ezkl.export(...)
+```
+
+Build and publish the repository by calling
+```
+poetry build
+poetry publish
 ```
