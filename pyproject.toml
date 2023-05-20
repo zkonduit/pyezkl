@@ -21,7 +21,7 @@ classifiers = [
 python = ">=3.7"
 numpy = "*"
 torch = "*"
-ezkl-lib = "*"
+ezkl_lib = "*"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
