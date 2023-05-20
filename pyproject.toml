@@ -1,22 +1,34 @@
-[build-system]
-requires = ["hatchling", "numpy", "torch"]
-build-backend = "hatchling.build"
-
-[project]
+[tool.poetry]
 name = "ezkl"
-version = "0.0.2"
-authors = [
-  { name="Jason Morton", email="jason@zkonduit.com" },
-  { name="Dante Camuto", email="jason@zkonduit.com" },    
-]
+version = "0.0.3"
 description = "Easy zero-knowledge learning in Python"
+authors = [
+  "Jason Morton <jason@zkonduit.com>",
+  "Dante Camuto <jason@zkonduit.com>",
+]
 readme = "README.md"
-requires-python = ">=3.7"
+license = "Apache-2.0"
+homepage = "https://github.com/zkonduit/pyezkl"
+repository = "https://github.com/zkonduit/pyezkl"
+documentation = ""
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+numpy = "*"
+torch = "*"
+ezkl_lib = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
 
 [project.urls]
 "Homepage" = "https://github.com/zkonduit/pyezkl"
