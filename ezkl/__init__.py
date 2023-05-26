@@ -9,6 +9,10 @@ from ezkl_lib import (
     setup,
     prove,
     verify,
+    aggregate,
+    verify_aggr,
     create_evm_verifier,
-    verify_evm
+    verify_evm,
+    create_evm_verifer_aggr,
+    print_proof_hex,
 )
