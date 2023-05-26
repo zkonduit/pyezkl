@@ -36,10 +36,6 @@ optional = false
 python-versions = ">=3.7"
 files = []
 
-[package.source]
-type = "file"
-url = "../ezkl/target/wheels/ezkl_lib-0.1.0-cp37-abi3-macosx_10_7_x86_64.whl"
-
 [[package]]
 name = "importlib-metadata"
 version = "6.6.0"
