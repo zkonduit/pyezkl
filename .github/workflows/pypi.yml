@@ -1,4 +1,4 @@
-name: Build and Publish on PyPI
+name: Build, Publish on PyPI, and Release
 
 on:
   # Requires someone to trigger this build script via github workflows
@@ -27,12 +27,12 @@ jobs:
     - name: Setup Poetry
       uses: abatilo/actions-poetry@v2
       with:
-        poetry-version: 1.2.0
+        poetry-version: 1.4.2
     - name: Install dependencies
-      run: "poetry install"
+      run: poetry install
 
     - name: Build
-      run: "poetry build"
+      run: poetry build
 
     # Both publish steps will fail if there is no trusted publisher setup
     # On failure the publish step will then simply continue to the next one
