@@ -1,0 +1,62 @@
+name: Build and Publish on PyPI
+
+on:
+  # Requires someone to trigger this build script via github workflows
+  # It is required that the codebase is audited by contributors
+  # before triggering to reduce the likelihood of supply chain attacks
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  release-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    # requires tagging prior to publish
+    if: "startsWith(github.ref, 'refs/tags/')"
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.7
+    - name: Setup Poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: 1.2.0
+    - name: Install dependencies
+      run: "poetry install"
+
+    - name: Build
+      run: "poetry build"
+
+    # Both publish steps will fail if there is no trusted publisher setup
+    # On failure the publish step will then simply continue to the next one
+
+    # publishes to PyPI
+    - name: Publish package distributions to PyPI
+      continue-on-error: true
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: ./dist
+
+    # publishes to TestPyPI
+    - name: Publish package distribution to TestPyPI
+      continue-on-error: true
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+        packages-dir: ./
+
+    # creates a release in the github repo
+    - uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: false
+        files: |
+          ./dist/*
+      id: "automatic_releases"
