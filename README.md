@@ -4,17 +4,17 @@ A library for using and testing ezkl from Python. The main purpose of this repos
 
 ```
 pyezkl/
-├── ezkl/ (pending: python bindings for calling ezkl)
+├── ezkl/
 |
 └── examples/
     └── tutorial/ (a tutorial for generating ezkl .onnx and .json inputs)
 ```
 
-For samples of onnx files generated using python see [this](https://github.com/zkonduit/onnx-examples) repo.
-
 ## development setup
 
 ### poetry
+
+Use this following setup if you would like to access developmental features in the main ezkl repo that is not released yet.
 
 Clone the ezkl repository.
 ```shell
@@ -51,7 +51,7 @@ Deactivate the existing venv virtual environment. Activate the virtual environme
 ```shell
 deactivate
 cd pyezkl
-poetry install      # this should fail to install ezkl_lib but would initialize a virtual env for you
+poetry install
 poetry shell        # activate the virtual environment for poetry
 cd ../ezkl/target/wheels
 pip install ezkl_lib-version-pythontype-abi3-osversion-processor.whl
@@ -66,9 +66,4 @@ pip install ./dist/ezkl-version-py3-none-any.whl
 python
 >>> import ezkl
 >>> ezkl.export(...)
-```
-
-After building the wheel you should be able to publish by calling the following function.
-```
-poetry publish
 ```
