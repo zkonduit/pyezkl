@@ -50,7 +50,7 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
-        packages-dir: ./
+        packages-dir: ./dist
 
     # creates a release in the github repo
     - uses: marvinpinto/action-automatic-releases@v1.2.1
