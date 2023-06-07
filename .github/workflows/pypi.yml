@@ -28,6 +28,15 @@ jobs:
       uses: abatilo/actions-poetry@v2
       with:
         poetry-version: 1.4.2
+
+    - name: Update pyproject.toml version to tag used for the build
+      run: |
+          TAG=${{ github.ref }}
+          TAG=${TAG#refs/tags/}
+          TAG=${TAG#v}
+          sed -i "s/^version = \".*\"/version = \"$TAG\"/" pyproject.toml
+          cat pyproject.toml
+
     - name: Install dependencies
       run: poetry install
 
