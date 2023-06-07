@@ -13,6 +13,6 @@ from ezkl_lib import (
     verify_aggr,
     create_evm_verifier,
     verify_evm,
-    create_evm_verifer_aggr,
+    create_evm_verifier_aggr,
     print_proof_hex,
 )
