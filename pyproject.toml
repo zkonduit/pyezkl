@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ezkl"
-version = "0.0.3"
+version = "0.0.4"
 description = "Easy zero-knowledge learning in Python"
 authors = [
   "Jason Morton <jason@zkonduit.com>",
