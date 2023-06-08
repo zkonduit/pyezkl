@@ -3,12 +3,12 @@
 from torch import nn
 import ezkl
 import os
-import json 
+import json
 
 
 # Defines the model
-# we got convs, we got relu, we got linear layers 
-# What else could one want ???? 
+# we got convs, we got relu, we got linear layers
+# What else could one want ????
 
 class MyModel(nn.Module):
     def __init__(self):
@@ -16,7 +16,7 @@ class MyModel(nn.Module):
 
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=2, kernel_size=5, stride=2)
         self.conv2 = nn.Conv2d(in_channels=2, out_channels=3, kernel_size=5, stride=2)
-        
+
         self.relu = nn.ReLU()
 
         self.d1 = nn.Linear(48, 48)
@@ -38,7 +38,7 @@ class MyModel(nn.Module):
 
         # logits => 32x10
         logits = self.d2(x)
-       
+
         return logits
 
 
@@ -47,7 +47,7 @@ def test_export():
     """
     Test prove with 4l_conv
     """
-    
+
     circuit = MyModel()
 
     # Train the model as you like here (skipped for brevity)
@@ -79,7 +79,7 @@ def test_export():
     assert os.path.isfile(pk_path)
     assert os.path.isfile(circuit_params_path)
 
-    # GENERATE A PROOF 
+    # GENERATE A PROOF
     proof_path = os.path.join('test.pf')
 
     res = ezkl.prove(
@@ -96,7 +96,7 @@ def test_export():
     assert res == True
     assert os.path.isfile(proof_path)
 
-    # VERIFY IT 
+    # VERIFY IT
 
     res = ezkl.verify(
         proof_path,
