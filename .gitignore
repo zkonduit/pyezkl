@@ -133,3 +133,5 @@ dmypy.json
 *.pk
 *.vk
 *.params
+examples/*.json
+examples/*.onnx
