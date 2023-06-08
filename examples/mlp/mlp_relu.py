@@ -34,10 +34,10 @@ class Model(nn.Module):
         init.orthogonal_(self.aff1.weight)
         init.orthogonal_(self.aff2.weight)
         init.orthogonal_(self.aff3.weight)
-    
+
 circuit = Model()
 export(circuit, input_shape = [3])
 
 
 
-    
+

@@ -21,6 +21,7 @@ classifiers = [
 python = ">=3.7"
 numpy = "*"
 torch = "*"
+onnx = "*"
 ezkl_lib = ">=0.1.0"
 
 [tool.poetry.group.dev.dependencies]

@@ -1,0 +1,38 @@
+name: Python
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "README.md"
+  pull_request:
+    branches: ["main"]
+    paths-ignore:
+      - "README.md"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2022-11-03
+          override: true
+          components: rustfmt, clippy
+      - name: Install solc
+        run: (hash svm 2>/dev/null || cargo install svm-rs) && svm install 0.8.17 && solc --version
+      - name: Setup Virtual Env and Install python dependencies
+        run: python -m venv .env; source .env/bin/activate; pip install poetry; poetry install;
+
+      - name: Run pytest
+        run: source .env/bin/activate; pytest
