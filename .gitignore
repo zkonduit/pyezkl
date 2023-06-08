@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ezkl misc files
+*.pf
+*.pk
+*.vk
+*.params
