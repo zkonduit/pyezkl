@@ -1,14 +1,7 @@
-# ezkl_python
-A library for using and testing ezkl from Python. The main purpose of this repository is to provide Python bindings for [ezkl](https://github.com/zkonduit/ezkl) and to provide simple tools for generating `.onnx` and `.json` input files that can be ingested by it.
+# ezkl
+`pip install ezkl` lets you use [ezkl](https://github.com/zkonduit/ezkl) directly from Python. It also contains an `export` function to generate `.onnx` and `.json` input files that can be ingested by the `ezkl` cli or from Python. [Here is colab notebook](https://colab.research.google.com/drive/1XuXNKqH7axOelZXyU3gpoTOCvFetIsKu?usp=sharing) that shows how to produce and verify a proof from Python.
 
-
-```
-pyezkl/
-├── ezkl/
-|
-└── examples/
-    └── tutorial/ (a tutorial for generating ezkl .onnx and .json inputs)
-```
+Check out [the docs](https://docs.ezkl.xyz) for more. If you want to *develop* the Python bindings, read on.
 
 ## development setup
 
