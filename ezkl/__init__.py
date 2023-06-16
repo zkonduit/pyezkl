@@ -9,6 +9,8 @@ from ezkl_lib import (
     setup,
     prove,
     verify,
+    gen_settings,
+    calibrate_settings,
     aggregate,
     verify_aggr,
     create_evm_verifier,
