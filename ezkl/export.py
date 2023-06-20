@@ -39,6 +39,9 @@ def export(
         x = torch.reshape(x,new_shape)
 
 
+    # Flips the neural net into inference mode
+    torch_model.eval()
+
     torch_out = torch_model(x)
 
     # Export the model
@@ -71,7 +74,7 @@ def export(
                 model=onnx_filename,
                 output=input_filename,
                 scale=scale,
-                batch_size=batch_size
+                batch_size=batch_size,
                 settings_path=settings_filename
             )
         else:
