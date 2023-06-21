@@ -4,6 +4,7 @@ import torch.onnx
 import torch
 import json
 import ezkl_lib
+import os
 
 def export(
     torch_model,
@@ -65,32 +66,23 @@ def export(
     # Serialize data into file:
     json.dump( data, open( input_filename, 'w' ) )
 
-    # Runs a forward operation to quantize inputs
-    if run_forward:
-        # Uses existing settings file for forward if it exists
-        if os.path.isfile(settings_filename):
-            ezkl_lib.forward(
-                data=input_filename,
-                model=onnx_filename,
-                output=input_filename,
-                scale=scale,
-                batch_size=batch_size,
-                settings_path=settings_filename
-            )
-        else:
-            ezkl_lib.forward(
-                data=input_filename,
-                model=onnx_filename,
-                output=input_filename,
-                scale=scale,
-                batch_size=batch_size
-            )
-
-    # calibrates the setup
+    # calibrates the setup and updates the settings file
     if run_calibrate_settings:
         ezkl_lib.gen_settings(onnx_filename, settings_filename)
         ezkl_lib.calibrate_settings(
             input_filename, onnx_filename, settings_filename, calibration_target)
+
+    # Runs a forward operation to quantize inputs
+    if run_forward:
+        # Uses existing settings file
+        ezkl_lib.gen_witness(
+            data=input_filename,
+            model=onnx_filename,
+            output=input_filename,
+            scale=scale,
+            batch_size=batch_size,
+            settings_path=settings_filename
+        )
 
 
 if __name__ == "__main__":

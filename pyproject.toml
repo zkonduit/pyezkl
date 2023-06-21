@@ -22,7 +22,7 @@ python = ">=3.7"
 numpy = "*"
 torch = "*"
 onnx = "*"
-ezkl_lib = "^0.2.0"
+ezkl_lib = "^0.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"

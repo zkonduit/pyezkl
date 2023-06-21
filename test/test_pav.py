@@ -63,7 +63,7 @@ def test_export():
     model_path = os.path.join('network.onnx')
     pk_path = os.path.join('test.pk')
     vk_path = os.path.join('test.vk')
-    circuit_params_path = os.path.join('circuit.params')
+    settings_path = os.path.join('settings.json')
     params_path = os.path.join('kzg.params')
 
     res = ezkl.setup(
@@ -71,13 +71,13 @@ def test_export():
         vk_path,
         pk_path,
         params_path,
-        circuit_params_path,
+        settings_path,
     )
 
     assert res == True
     assert os.path.isfile(vk_path)
     assert os.path.isfile(pk_path)
-    assert os.path.isfile(circuit_params_path)
+    assert os.path.isfile(settings_path)
 
     # GENERATE A PROOF
     proof_path = os.path.join('test.pf')
@@ -90,7 +90,8 @@ def test_export():
         params_path,
         "poseidon",
         "single",
-        circuit_params_path
+        settings_path,
+        True
     )
 
     assert res == True
@@ -100,7 +101,7 @@ def test_export():
 
     res = ezkl.verify(
         proof_path,
-        circuit_params_path,
+        settings_path,
         vk_path,
         params_path,
     )
