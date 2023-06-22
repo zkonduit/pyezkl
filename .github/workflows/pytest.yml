@@ -38,4 +38,4 @@ jobs:
       - name: Install python dependencies
         run: pip install poetry; poetry install;
       - name: Run pytest
-        run: pytest
+        run: poetry run pytest
