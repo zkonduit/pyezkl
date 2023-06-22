@@ -57,7 +57,7 @@ def test_export():
 
     # generate a srs for testing
     params_path = os.path.join('kzg.params')
-    res = ezkl.gen_srs(params_path, 17)
+    res = ezkl.gen_srs(params_path, 15)
 
     data_path = os.path.join('input.json')
     model_path = os.path.join('network.onnx')

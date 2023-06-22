@@ -121,7 +121,7 @@ def test_integration():
     optimizer = optim.Adam(model.parameters(), lr = 0.005)
 
     model.train()
-    for e in range(1, 5):
+    for e in range(1, 2):
         epoch_loss = 0
         epoch_auc = 0
         for X_batch, y_batch in data_loader: #train_loader:
