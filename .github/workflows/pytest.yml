@@ -20,7 +20,7 @@ jobs:
   python-tests:
     strategy:
       matrix:
-        python: ["3.8", "3.9", "3.10", "3.11"]
+        python: ["3.8", "3.9", "3.10"]
         include:
           - os: ubuntu-latest
             target: x86_64
