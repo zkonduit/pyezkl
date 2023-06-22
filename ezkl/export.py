@@ -16,8 +16,8 @@ def export(
     run_gen_witness=True,
     run_calibrate_settings=True,
     calibration_target="resources",
-    scale=7,
-    batch_size=1,
+    scale=None,
+    batch_size=None,
 ):
     """Export a PyTorch model.
     Arguments:

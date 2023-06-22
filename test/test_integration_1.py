@@ -11,6 +11,7 @@ import pandas as pd
 
 import os
 import ezkl
+import json
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -156,7 +157,6 @@ def test_integration():
     y_pred_list = [a.squeeze().tolist() for a in y_pred_list]
     y_pred_prob_list = [a.squeeze().tolist() for a in y_pred_prob_list]
 
-    ezkl.gen_srs(os.path.join(CURRENT_PATH, 'srs.params'), 23)
 
     ezkl.export(
         model.to('cpu'),
@@ -175,6 +175,12 @@ def test_integration():
     )
     assert res
 
+    # get log rows from settings.json
+    with open(os.path.join(CURRENT_PATH, 'settings.json'), 'r') as f:
+        data = json.load(f)
+
+    ezkl.gen_srs(os.path.join(CURRENT_PATH, 'srs.params'), data['run_args']['logrows'])
+
     res = ezkl.prove(
         os.path.join(CURRENT_PATH, 'input_small.json'),
         os.path.join(CURRENT_PATH, 'network_small.onnx'),
@@ -189,28 +195,13 @@ def test_integration():
 
     assert res
 
-    # TODO: Weird error here
-    # error: constraint not satisfied
+    res = ezkl.mock(
+        os.path.join(CURRENT_PATH, 'input_small.json'),
+        os.path.join(CURRENT_PATH, 'network_small.onnx'),
+        os.path.join(CURRENT_PATH, 'settings.json')
+    )
 
-    #   Cell layout in region 'model':
-    #     | Offset | A1 | A2 |
-    #     +--------+----+----+
-    #     |  11031 | x0 | x1 | <--{ Gate 'RANGE' applied here
-
-    #   Constraint '':
-    #     ((S12 * (0x2 - S12)) * (0x3 - S12)) * (x0 - x1) = 0
-
-    #   Assigned cell values:
-    #     x0 = 0x7a3
-    #     x1 = 0xbf2
-
-    # res = ezkl.mock(
-    #     os.path.join(CURRENT_PATH, 'input_small.json'),
-    #     os.path.join(CURRENT_PATH, 'network_small.onnx'),
-    #     os.path.join(CURRENT_PATH, 'settings.json')
-    # )
-
-    # assert res
+    assert res
 
     res = ezkl.verify(
         os.path.join(CURRENT_PATH, 'zkml_proof_small.pf'),
@@ -218,3 +209,5 @@ def test_integration():
         os.path.join(CURRENT_PATH, 'model_vk_small.vk'),
         os.path.join(CURRENT_PATH, 'srs.params'),
     )
+
+    assert res
