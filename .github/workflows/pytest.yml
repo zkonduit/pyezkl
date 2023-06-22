@@ -33,9 +33,9 @@ jobs:
           toolchain: nightly-2022-11-03
           override: true
           components: rustfmt, clippy
-      - name: Install solc
+      - name: Install solc with solc-select
         run: pip install solc-select; solc-select install 0.8.20; solc-select use 0.8.20
-      - name: Setup Virtual Env and Install python dependencies
-        run: python -m venv .env; source .env/bin/activate; pip install poetry; poetry install;
+      - name: Install python dependencies
+        run: pip install poetry; poetry install;
       - name: Run pytest
         run: source .env/bin/activate; pytest
