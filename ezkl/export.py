@@ -13,7 +13,7 @@ def export(
     onnx_filename="network.onnx",
     input_filename="input.json",
     settings_filename="settings.json",
-    run_forward=True,
+    run_gen_witness=True,
     run_calibrate_settings=True,
     calibration_target="resources",
     scale=7,
@@ -29,6 +29,11 @@ def export(
     - onnx_filename: Default "network.onnx", the name of the onnx file to be generated
     - input_filename: Default "input.json", the name of the json input file to be generated for ezkl
     - settings_filename: Default "settings.json", the name of the settings file name generated in the calibration step
+    - run_gen_witness: Default True, boolean flag to indicate whether gen witness will be run in export
+    - run_calibrate_settings: Default True, boolean flag to indicate whether calibrate settings will be run in export
+    - calibration_target: Default "resources", takes in two kinds of strings "resources" to optimize for resource, "accuracy" to optimize for accuracy
+    - scale: Default 7, scale factor used in gen_witness
+    - batch_size: Default 1, batch size used in gen_witness
     """
     if input_array is None:
         x = 0.1*torch.rand(1,*input_shape, requires_grad=True)
@@ -73,7 +78,7 @@ def export(
             input_filename, onnx_filename, settings_filename, calibration_target)
 
     # Runs a forward operation to quantize inputs
-    if run_forward:
+    if run_gen_witness:
         # Uses existing settings file
         ezkl_lib.gen_witness(
             data=input_filename,
