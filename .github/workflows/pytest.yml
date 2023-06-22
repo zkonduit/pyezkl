@@ -41,6 +41,6 @@ jobs:
       - name: Install solc with solc-select
         run: pip install solc-select; solc-select install 0.8.20; solc-select use 0.8.20
       - name: Install python dependencies
-        run: pip install poetry; poetry install;
+        run: pip install poetry; poetry cache clear . --all; rm poetry.lock; poetry install;
       - name: Run pytest
         run: poetry run pytest
