@@ -1,12 +1,41 @@
 # ezkl
-`pip install ezkl` lets you use [ezkl](https://github.com/zkonduit/ezkl) directly from Python. It also contains an `export` function to generate `.onnx` and `.json` input files that can be ingested by the `ezkl` cli or from Python. [Here is colab notebook](https://colab.research.google.com/drive/1XuXNKqH7axOelZXyU3gpoTOCvFetIsKu?usp=sharing) that shows how to produce and verify a proof from Python.
+This repository contains the Python bindings for [ezkl](https://github.com/zkonduit/ezkl).
 
-Check out [the docs](https://docs.ezkl.xyz) for more. If you want to *develop* the Python bindings, read on.
+
+For more information check out [the docs](https://docs.ezkl.xyz).
+
+## quickstart
+
+To get started with `ezkl` run
+
+```shell
+pip install ezkl
+
+# alternatively, depending on how your environment is setup
+
+pip3 install ezkl
+```
+
+[Try out ezkl on colab here!](https://colab.research.google.com/drive/1XuXNKqH7axOelZXyU3gpoTOCvFetIsKu?usp=sharing).
 
 ## development setup
 
 ### poetry
 
+#### build pyezkl only
+Use this following setup if you would like to access developmental features in the pyezkl repo only. This will rely on the `ezkl_lib` version that is published on PyPI
+
+Clone this repository
+```shell
+poetry install
+poetry build
+cd dist
+poetry shell
+pip install wheel_file_you_just_generated.whl
+
+```
+
+#### build both ezkl and pyezkl
 Use this following setup if you would like to access developmental features in the main ezkl repo that is not released yet.
 
 Clone the ezkl repository.

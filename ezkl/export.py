@@ -4,8 +4,21 @@ import torch.onnx
 import torch
 import json
 import ezkl_lib
+import os
 
-def export(torch_model, input_shape=None, input_array=None, onnx_filename="network.onnx", input_filename="input.json"):
+def export(
+    torch_model,
+    input_shape=None,
+    input_array=None,
+    onnx_filename="network.onnx",
+    input_filename="input.json",
+    settings_filename="settings.json",
+    run_gen_witness=True,
+    run_calibrate_settings=True,
+    calibration_target="resources",
+    scale=None,
+    batch_size=None,
+):
     """Export a PyTorch model.
     Arguments:
     torch_model: a PyTorch model class, such as Network(torch.nn.Module)
@@ -14,8 +27,13 @@ def export(torch_model, input_shape=None, input_array=None, onnx_filename="netwo
     - input_array: the given input will be used for the model
     Note: Exactly one of input_shape and input_array should be specified.
     - onnx_filename: Default "network.onnx", the name of the onnx file to be generated
-    - input_filename: Defualt "input.json", the name of the json input file to be generated for ezkl
-
+    - input_filename: Default "input.json", the name of the json input file to be generated for ezkl
+    - settings_filename: Default "settings.json", the name of the settings file name generated in the calibration step
+    - run_gen_witness: Default True, boolean flag to indicate whether gen witness will be run in export
+    - run_calibrate_settings: Default True, boolean flag to indicate whether calibrate settings will be run in export
+    - calibration_target: Default "resources", takes in two kinds of strings "resources" to optimize for resource, "accuracy" to optimize for accuracy
+    - scale: Default 7, scale factor used in gen_witness
+    - batch_size: Default 1, batch size used in gen_witness
     """
     if input_array is None:
         x = 0.1*torch.rand(1,*input_shape, requires_grad=True)
@@ -26,6 +44,9 @@ def export(torch_model, input_shape=None, input_array=None, onnx_filename="netwo
         new_shape = tuple([1]+list(x.shape))
         x = torch.reshape(x,new_shape)
 
+
+    # Flips the neural net into inference mode
+    torch_model.eval()
 
     torch_out = torch_model(x)
 
@@ -50,8 +71,24 @@ def export(torch_model, input_shape=None, input_array=None, onnx_filename="netwo
     # Serialize data into file:
     json.dump( data, open( input_filename, 'w' ) )
 
+    # calibrates the setup and updates the settings file
+    if run_calibrate_settings:
+        ezkl_lib.gen_settings(onnx_filename, settings_filename)
+        ezkl_lib.calibrate_settings(
+            input_filename, onnx_filename, settings_filename, calibration_target)
+
     # Runs a forward operation to quantize inputs
-    ezkl_lib.forward(input_filename, onnx_filename, input_filename)
+    if run_gen_witness:
+        # Uses existing settings file
+        ezkl_lib.gen_witness(
+            data=input_filename,
+            model=onnx_filename,
+            output=input_filename,
+            scale=scale,
+            batch_size=batch_size,
+            settings_path=settings_filename
+        )
+
 
 if __name__ == "__main__":
     from torch import nn

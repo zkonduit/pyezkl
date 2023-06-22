@@ -133,5 +133,11 @@ dmypy.json
 *.pk
 *.vk
 *.params
+*.onnx
+test/*.json
+input.json
+settings.json
 examples/*.json
 examples/*.onnx
+
+.DS_Store
