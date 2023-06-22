@@ -166,6 +166,12 @@ def test_integration():
         settings_filename = os.path.join(CURRENT_PATH, 'settings.json')
     )
 
+    # get log rows from settings.json
+    with open(os.path.join(CURRENT_PATH, 'settings.json'), 'r') as f:
+        data = json.load(f)
+
+    ezkl.gen_srs(os.path.join(CURRENT_PATH, 'srs.params'), data['run_args']['logrows'])
+
     res = ezkl.setup(
         os.path.join(CURRENT_PATH, 'network_small.onnx'),
         os.path.join(CURRENT_PATH, 'model_vk_small.vk'),
@@ -174,12 +180,6 @@ def test_integration():
         os.path.join(CURRENT_PATH, 'settings.json')
     )
     assert res
-
-    # get log rows from settings.json
-    with open(os.path.join(CURRENT_PATH, 'settings.json'), 'r') as f:
-        data = json.load(f)
-
-    ezkl.gen_srs(os.path.join(CURRENT_PATH, 'srs.params'), data['run_args']['logrows'])
 
     res = ezkl.prove(
         os.path.join(CURRENT_PATH, 'input_small.json'),
