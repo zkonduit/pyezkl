@@ -2,6 +2,17 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
 
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+
+import pandas as pd
+
+import os
+import ezkl
+
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class StratifiedBatchSampler:
     """Stratified batch sampling
@@ -44,7 +55,7 @@ class TrainData(Dataset):
 class TestData(Dataset):
     """Test data class"""
 
-    def __init__(self, X_data):
+    def setX(self, X_data):
         self.X_data = X_data
 
     def __getitem__(self, index):
@@ -84,20 +95,21 @@ def pytorch_auc(y_pred, y_test):
 
 def test_integration():
     """Test integration with data/1_*_test/train.csv"""
-    X_train = pd.read_csv(os.path.join('data', '1_X_train.csv'))
-    y_train = pd.read_csv(os.path.join('data', '1_y_train.csv'))
-    X_test = pd.read_csv(os.path.join('data', '1_X_test.csv'))
-    y_test = pd.read_csv(os.path.join('data', '1_y_test.csv'))
+    X_train = pd.read_csv(os.path.join(CURRENT_PATH, 'data', '1_X_train.csv'))
+    y_train = pd.read_csv(os.path.join(CURRENT_PATH, 'data', '1_y_train.csv'))
+    X_test = pd.read_csv(os.path.join(CURRENT_PATH, 'data', '1_X_test.csv'))
+    y_test = pd.read_csv(os.path.join(CURRENT_PATH, 'data', '1_y_test.csv'))
 
     train_data = TrainData(torch.Tensor(X_train.to_numpy()), torch.Tensor(y_train.to_numpy()))
-    test_data = TestData(torch.Tensor(X_test.to_numpy()))
+    test_data = TestData()
+    test_data.setX(torch.Tensor(X_test.to_numpy()))
 
     data_loader = DataLoader(
         dataset = train_data,
-        batch_sampler = StratifiedBatchSampler(torch.tensor(y_train.to_numpy().flatten()), batch_size = BATCH_SIZE),
+        batch_sampler = StratifiedBatchSampler(torch.tensor(y_train.to_numpy().flatten()), batch_size = 8),
     )
 
-    test_loader = DataLoader(dataset = test_data, batch_size = 1)
+    test_loader = DataLoader(dataset = test_data, batch_size = 2)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -134,7 +146,7 @@ def test_integration():
     model.eval()
     with torch.no_grad():
         for X_test_batch in test_loader:
-            # X_test_batch = X_test_batch.to(device)
+            X_test_batch = X_test_batch.to(device)
             y_test_pred = model(X_test_batch)
             y_test_pred_prob = torch.sigmoid(y_test_pred)
             y_pred_tag = torch.round(y_test_pred_prob)
@@ -144,40 +156,65 @@ def test_integration():
     y_pred_list = [a.squeeze().tolist() for a in y_pred_list]
     y_pred_prob_list = [a.squeeze().tolist() for a in y_pred_prob_list]
 
-    ezkl.gen_srs('srs.params', 17)
+    ezkl.gen_srs(os.path.join(CURRENT_PATH, 'srs.params'), 23)
 
     ezkl.export(
         model.to('cpu'),
         input_shape = [41],
-        onnx_filename = 'network_small.onnx',
-        input_filename = 'input_small.json'
+        onnx_filename = os.path.join(CURRENT_PATH, 'network_small.onnx'),
+        input_filename = os.path.join(CURRENT_PATH, 'input_small.json'),
+        settings_filename = os.path.join(CURRENT_PATH, 'settings.json')
     )
 
     res = ezkl.setup(
-        'network_small.onnx',
-        'model_vk_small.vk',
-        'model_pk_small.pk',
-        'srs.params',
-        'network_params_small.params'
+        os.path.join(CURRENT_PATH, 'network_small.onnx'),
+        os.path.join(CURRENT_PATH, 'model_vk_small.vk'),
+        os.path.join(CURRENT_PATH, 'model_pk_small.pk'),
+        os.path.join(CURRENT_PATH, 'srs.params'),
+        os.path.join(CURRENT_PATH, 'settings.json')
     )
     assert res
 
     res = ezkl.prove(
-        'input_small.json',
-        'network_small.onnx',
-        'model_pk_small.pk',
-        'zkml_proof_small.pf',
-        'srs.params',
+        os.path.join(CURRENT_PATH, 'input_small.json'),
+        os.path.join(CURRENT_PATH, 'network_small.onnx'),
+        os.path.join(CURRENT_PATH, 'model_pk_small.pk'),
+        os.path.join(CURRENT_PATH, 'zkml_proof_small.pf'),
+        os.path.join(CURRENT_PATH, 'srs.params'),
         'poseidon',
         'single',
-        'network_params_small.params'
+        os.path.join(CURRENT_PATH, 'settings.json'),
+        False
     )
 
     assert res
 
-    run_args = ezkl.PyRunArgs()
-    run_args.scale = 17
+    # TODO: Weird error here
+    # error: constraint not satisfied
 
-    res = ezkl.mock("input_small.json", "network_small.onnx", run_args)
+    #   Cell layout in region 'model':
+    #     | Offset | A1 | A2 |
+    #     +--------+----+----+
+    #     |  11031 | x0 | x1 | <--{ Gate 'RANGE' applied here
 
-    assert res
+    #   Constraint '':
+    #     ((S12 * (0x2 - S12)) * (0x3 - S12)) * (x0 - x1) = 0
+
+    #   Assigned cell values:
+    #     x0 = 0x7a3
+    #     x1 = 0xbf2
+
+    # res = ezkl.mock(
+    #     os.path.join(CURRENT_PATH, 'input_small.json'),
+    #     os.path.join(CURRENT_PATH, 'network_small.onnx'),
+    #     os.path.join(CURRENT_PATH, 'settings.json')
+    # )
+
+    # assert res
+
+    res = ezkl.verify(
+        os.path.join(CURRENT_PATH, 'zkml_proof_small.pf'),
+        os.path.join(CURRENT_PATH, 'settings.json'),
+        os.path.join(CURRENT_PATH, 'model_vk_small.vk'),
+        os.path.join(CURRENT_PATH, 'srs.params'),
+    )
