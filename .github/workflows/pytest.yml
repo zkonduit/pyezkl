@@ -24,6 +24,9 @@ jobs:
         target: [x86_64, x64, universal2-apple-darwin]
         python: ["3.8", "3.9", "3.10"]
         exclude:
+          - os: macos-latest
+            target: universal2-apple-darwin
+            python: "3.10"
           - os: ubuntu-latest
             target: universal2-apple-darwin
           - os: ubuntu-latest
