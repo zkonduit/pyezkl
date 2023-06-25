@@ -1,4 +1,4 @@
-name: Pythona Tests
+name: Python Tests
 on:
   push:
     branches: ["main"]
