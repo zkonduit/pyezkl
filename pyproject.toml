@@ -19,9 +19,9 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-numpy = "*"
-torch = "*"
-onnx = "*"
+numpy = "^1.24.3"
+torch = "^1.13.1"
+onnx = "^1.14.0"
 ezkl_lib = "^0.3.0"
 
 [tool.poetry.group.dev.dependencies]
