@@ -1,4 +1,4 @@
-name: Python
+name: Python Tests
 on:
   push:
     branches: ["main"]
@@ -18,22 +18,16 @@ env:
 
 jobs:
   python-tests:
-    # strategy:
-    #   matrix:
-    #     os: [ubuntu-latest, windows-latest, macos-latest]
-    #     python: ["3.8", "3.9", "3.10"]
-    #     exclude:
-    #       - os: windows-latest
-    #         python: "3.8"
-    #       - os: windows-latest
-    #         python: "3.9"
-    # runs-on: ${{ matrix.os }}
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.8", "3.9", "3.10"]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: ${{ matrix.python }}
       - name: Install solc with solc-select
         run: pip install solc-select; solc-select install 0.8.20; solc-select use 0.8.20
       - name: Install python dependencies
