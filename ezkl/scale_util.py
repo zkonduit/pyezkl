@@ -2,7 +2,7 @@ from mclbn256 import Fr
 import json
 
 
-def deserialize(
+def deserialize( # deserialize the output bytes
     output_bytes,
 ):
     reconstructed_bytes=bytes()
@@ -16,7 +16,7 @@ def deserialize(
 
 
     
-def get_scaled_value (
+def get_scaled_value ( # get the scaled value of the output bytes
     witness_path=None, # path to witness json file
     settings_path=None, # path to settings json file
     output_bytes=None, # output bytes (used if witness_path is None)
@@ -37,7 +37,7 @@ def calculate_error(
     output_bytes,
     original_output_value,
     scale,
-) :
+) : # calculate the error with the given output bytes, original output value, and scale
     rep = deserialize(output_bytes)
     
     unscaled_rep = rep / 2 ** scale
@@ -45,28 +45,7 @@ def calculate_error(
     return (unscaled_rep) - original_output_value
 
 
-def get_x_or_use_y (x_path, item_in_json,y, error_message):
-    if x_path is not None:
-        return json.load(open(x_path, 'r'))[item_in_json] 
-    elif y is not None:
-        return y
-    else:
-        raise Exception(error_message)
-
-
-def get_output_bytes_to_use (witness_path,output_bytes ):
-    return get_x_or_use_y (witness_path, 'output_data', output_bytes, "No output bytes provided")
-
-
-def get_original_output_value_to_use (origin_data_path, original_output_value):
-    return get_x_or_use_y (origin_data_path, 'output_data', original_output_value, "No original output value provided")
-
-
-def get_scale_to_use (settings_path, scale):
-    return get_x_or_use_y (settings_path, 'scale', scale, "No scale provided")
-
-
-def calculate_error_of_witness(
+def calculate_error_of_witness( # calculate the error of the witness (loads from json files)
         witness_path=None, # path to witness json file
         origin_data_path=None, # path to original data json file
         settings_path=None, # path to settings json file
@@ -90,6 +69,28 @@ def calculate_error_of_witness(
         ))    
 
     return result
+
+
+
+def get_x_or_use_y (x_path, item_in_json,y, error_message):
+    if x_path is not None:
+        return json.load(open(x_path, 'r'))[item_in_json] 
+    elif y is not None:
+        return y
+    else:
+        raise Exception(error_message)
+
+
+def get_output_bytes_to_use (witness_path,output_bytes ):
+    return get_x_or_use_y (witness_path, 'output_data', output_bytes, "No output bytes provided")
+
+
+def get_original_output_value_to_use (origin_data_path, original_output_value):
+    return get_x_or_use_y (origin_data_path, 'output_data', original_output_value, "No original output value provided")
+
+
+def get_scale_to_use (settings_path, scale):
+    return get_x_or_use_y (settings_path, 'scale', scale, "No scale provided")
 
 
 if __name__ == '__main__':
