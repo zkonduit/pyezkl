@@ -60,13 +60,18 @@ def calculate_error_of_witness( # calculate the error of the witness (loads from
     if len(output_bytes_to_use) != len(original_output_value_to_use):
         raise Exception("Output bytes and original output value must be the same length")
 
+
     result = []
     for i in range(len(output_bytes_to_use)):
-        result.append(calculate_error(
-            output_bytes_to_use[i],
-            original_output_value_to_use[i],
-            scale_to_use,
-        ))    
+        result.append([])
+        if len(output_bytes_to_use[i]) != len(original_output_value_to_use[i]):
+            raise Exception("Output bytes and original output value must be the same length")
+        for j in range(len(output_bytes_to_use[i])):
+            result[i].append(calculate_error(
+                output_bytes_to_use[i][j],
+                original_output_value_to_use[j][i],
+                scale_to_use,
+            ))
 
     return result
 
@@ -90,7 +95,12 @@ def get_original_output_value_to_use (origin_data_path, original_output_value):
 
 
 def get_scale_to_use (settings_path, scale):
-    return get_x_or_use_y (settings_path, 'scale', scale, "No scale provided")
+    if settings_path is not None:
+        return json.load(open(settings_path, 'r'))['run_args']['scale'] 
+    elif scale is not None:
+        return scale
+    else:
+        raise Exception("No scale provided")
 
 
 if __name__ == '__main__':
@@ -100,4 +110,4 @@ if __name__ == '__main__':
     third_byte = 0
     fourth_byte = 0
 
-    print(calculate_error_of_witness(output_bytes=[[first_byte, second_byte, third_byte, fourth_byte]],original_output_value= [0.49169921875], scale=8))
+    print(calculate_error_of_witness(witness_path="test/test_scale/input_scaled.json",origin_data_path= "test/test_scale/input_original.json", settings_path = "test/test_scale/setting.json"))
