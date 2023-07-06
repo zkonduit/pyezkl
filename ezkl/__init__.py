@@ -4,7 +4,8 @@ from .scale_util import (
     calculate_error,
     calculate_error_of_witness,
     get_scaled_value,
-    deserialize
+    deserialize,
+    ErrorCalculationType,
 )
 
 from ezkl_lib import (
