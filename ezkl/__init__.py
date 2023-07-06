@@ -1,6 +1,6 @@
 from .export import export
 
-from scale_util import (
+from .scale_util import (
     calculate_error,
     calculate_error_of_witness,
     get_scaled_value,
