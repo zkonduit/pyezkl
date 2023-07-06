@@ -1,5 +1,13 @@
 from .export import export
 
+from .scale_util import (
+    calculate_error,
+    calculate_error_of_witness,
+    get_scaled_value,
+    deserialize,
+    ErrorCalculationType,
+)
+
 from ezkl_lib import (
     PyRunArgs,
     table,

@@ -642,6 +642,7 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*"
 files = [
     {file = "jsonpointer-2.4-py2.py3-none-any.whl", hash = "sha256:15d51bba20eea3165644553647711d150376234112651b4f1811022aecad7d7a"},
+    {file = "jsonpointer-2.4.tar.gz", hash = "sha256:585cee82b70211fa9e6043b7bb89db6e1aa49524340dde8ad6b63206ea689d88"},
 ]
 
 [[package]]
@@ -933,6 +934,21 @@ files = [
 
 [package.dependencies]
 traitlets = "*"
+
+[[package]]
+name = "mclbn256"
+version = "1.3.2"
+description = "Python bindings for the BN254/256 pairing-friendly curve supported by the MCl library."
+optional = false
+python-versions = "*"
+files = [
+    {file = "mclbn256-1.3.2-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:76721dff6694d669cf8f5a96c658f9ef7fdb247b9735682f6b0155a402c31bb3"},
+    {file = "mclbn256-1.3.2-py3-none-macosx_11_0_universal2.whl", hash = "sha256:9933199d26eb54648f2331c4c1bfe958911bd2f24ba4685109f2c2787259826f"},
+    {file = "mclbn256-1.3.2-py3-none-macosx_12_0_arm64.whl", hash = "sha256:7d7916ab7d48235741a1e09723f756372e0aca22e10e8580518c5c5a74104a93"},
+    {file = "mclbn256-1.3.2-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:c83d6b635c875580073f95bc99964980cbcdc8190e3456dab6db586886ff59e1"},
+    {file = "mclbn256-1.3.2-py3-none-win32.whl", hash = "sha256:730637bedf46f0468e25d8de7af491e8538850bbf05111a3f95ffb48fe87d7a1"},
+    {file = "mclbn256-1.3.2-py3-none-win_amd64.whl", hash = "sha256:975f49885090ad934a6e270eff87f13ec7c63c3d9fc03f78dc3c6097d98728ef"},
+]
 
 [[package]]
 name = "mistune"
@@ -2345,4 +2361,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8"
-content-hash = "a02ca9454f98ed16885e3edf65cd8e86bce2c9de435edce794bac0ed308d7cb6"
+content-hash = "e2daa2b6761b85dd18cf83aa60688b0e3439057028555142fe82bec6ded3f0dd"
