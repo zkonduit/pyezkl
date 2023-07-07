@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "ezkl"
-version = "0.1.0"
+name = "ezkl_lib"
+version = "1.0.2"
 description = "Easy zero-knowledge learning in Python"
 authors = [
   "Jason Morton <jason@zkonduit.com>",
@@ -20,15 +20,15 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.8"
 numpy = "^1.24.3"
-torch = "^1.13.1"
 onnx = "^1.14.0"
-ezkl_lib = "^0.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
 scikit-learn = "^1.2.2"
 pandas = "^2.0.2"
 jupyter = "^1.0.0"
+ezkl-lib = "^0.3.0"
+torch = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.4.2"]
