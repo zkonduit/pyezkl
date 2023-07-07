@@ -1,8 +1,10 @@
-# ezkl
-This repository contains the Python bindings for [ezkl](https://github.com/zkonduit/ezkl).
+# ezkl lib
+Python-based libraries and helper functions to support the use of [ezkl](https://github.com/zkonduit/ezkl).
 
+Note that the main python bindings are also found within the main [ezkl](https://github.com/zkonduit/ezkl) repository.
 
 For more information check out [the docs](https://docs.ezkl.xyz).
+
 
 ## quickstart
 
